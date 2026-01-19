@@ -1,0 +1,73 @@
+# ===============================
+# SERVER
+# ===============================
+server:
+  port: 8080
+  # Port ERP chạy local
+  # Truy cập: http://localhost:8080
+
+
+# ===============================
+# SPRING DATASOURCE (PostgreSQL)
+# ===============================
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp_db
+    # localhost vì PostgreSQL đang chạy bằng Docker,
+    # và port 5432 đã được expose ra máy local
+
+    username: erp_user
+    password: erp_pass
+
+    driver-class-name: org.postgresql.Driver
+
+
+  # ===============================
+  # JPA / HIBERNATE
+  # ===============================
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      # validate:
+      # - KHÔNG tạo table
+      # - Chỉ kiểm tra table nếu có @Entity
+      # - Chuẩn đi làm (dev gần prod)
+
+    show-sql: true
+    # In SQL ra console (dev only)
+
+    properties:
+      hibernate:
+        format_sql: true
+        # Format SQL cho dễ đọc log
+
+
+  # ===============================
+  # RABBITMQ
+  # ===============================
+  rabbitmq:
+    host: localhost
+    # localhost vì RabbitMQ chạy Docker và expose port
+
+    port: 5672
+    username: guest
+    password: guest
+
+    # Không cần config queue/exchange ở đây
+    # Sẽ config bằng Java Config sau
+
+
+# ===============================
+# LOGGING (OPTIONAL – RẤT NÊN)
+# ===============================
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    # Log SQL + bind param (dev only)
+
+
+# ===============================
+# SPRING PROFILE (OPTIONAL)
+# ===============================
+spring.profiles.active: local

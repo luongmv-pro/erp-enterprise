@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+
+  # =========================
+  # PostgreSQL - ERP Database
+  # =========================
+  postgres:
+    image: postgres:15
+    container_name: erp-postgres
+
+    environment:
+      POSTGRES_DB: erp_db          # tên database ERP
+      POSTGRES_USER: erp_user      # user ERP
+      POSTGRES_PASSWORD: erp_pass  # password ERP
+
+    ports:
+      - "5432:5432"                # expose cho ERP local
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # đảm bảo dữ liệu không mất khi restart
+
+
+  # =========================
+  # RabbitMQ - Message Broker
+  # =========================
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: erp-rabbitmq
+
+    ports:
+      - "5672:5672"     # ERP connect
+      - "15672:15672"   # web UI quản trị RabbitMQ
+
+
+# =========================
+# VOLUMES
+# =========================
+volumes:
+  postgres_data:
